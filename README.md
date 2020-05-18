@@ -30,7 +30,13 @@
 
 ### Install library
 ```
-npm install --save savjeecoin
+npm install 
+```
+
+### Test The code with Mocha
+
+```
+npm test 
 ```
 
 ### Generate a keypair
