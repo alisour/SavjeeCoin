@@ -125,6 +125,185 @@ class Block {
   }
 }
 
+class HashBlock {
+  /**
+  * @param {number} timestamp
+  * @param {Transaction[]} transactions
+  * @param {string} previousHash
+  */
+  //              START  TESTING       HASH FUNCTIONS!!!!
+  constructor(timestamp, transactions, previousHash = '', hashFunction) {
+    this.previousHash = previousHash;
+    this.timestamp = timestamp;
+    this.transactions = transactions;
+    this.nonce = 0;
+
+    switch (hashFunction) {
+    case 'MD5-RSA':
+      this.hash = this.calculateHashMd5Rsa();
+      break;
+    case 'SHA1-RSA':
+      this.hash = this.calculateHashSha1Rsa();
+      break;
+    case 'SHA2':
+      this.hash = this.calculateHashSha2();
+      break;
+    case 'SHA3':
+      this.hash = this.calculateHashSha3();
+      break;
+    case 'SHA512':
+      this.hash = this.calculateHashSha512();
+      break;
+    case 'BLAKE2B512':
+      this.hash = this.calculateHashBlake2();
+      break;
+    case 'RIPEMD160-RSA':
+      this.hash = this.calculateHashRipemd160Rsa();
+      break;
+    case 'MDC2-RSA':
+      this.hash = this.calculateHashMdc2Rsa();
+      break;
+    case 'SSL3-SHA1':
+      this.hash = this.calculateHashSsl3Sha1();
+      break;
+    case 'WHIRLPOOL':
+      this.hash = this.calculateHashWhirlpool();
+      break;
+
+    default:
+      console.log('Wrong choice of hash!');
+      break;
+    }
+  }
+
+  /**
+  * Returns the md5-rsa of this block (by processing all the data stored
+  * inside this block)
+  * @returns {string}
+  */
+  calculateHashMd5Rsa() {
+    return crypto.createHash('md5WithRSAEncryption').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+  * Returns the SHA1-rsa of this block (by processing all the data stored
+  * inside this block)
+  * @returns {string}
+  */
+  calculateHashSha1Rsa() {
+    return crypto.createHash('sha1WithRSAEncryption').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+   * Returns the SHA256 of this block (by processing all the data stored
+   * inside this block)
+   *
+   * @returns {string}
+   */
+  calculateHashSha2() {
+    return crypto.createHash('sha256').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+  * Returns the SHA384 of this block (by processing all the data stored
+  * inside this block)
+  * @returns {string}
+  */
+  calculateHashSha3() {
+    return crypto.createHash('sha384').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the sha512 of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashSha512() {
+    return crypto.createHash('sha512').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the blake2b512 of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashBlake2() {
+    return crypto.createHash('blake2b512').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the md160-rsa of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashRipemd160Rsa() {
+    return crypto.createHash('ripemd160WithRSA').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the mdc2-rsa of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashMdc2Rsa() {
+    return crypto.createHash('mdc2WithRSA').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the ssl3-sha1 of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashSsl3Sha1() {
+    return crypto.createHash('ssl3-sha1').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+  /**
+    * Returns the whirlpoll of this block (by processing all the data stored
+    * inside this block)
+    * @returns {string}
+    */
+  calculateHashWhirlpool() {
+    return crypto.createHash('whirlpool').update(this.previousHash + this.timestamp + JSON.stringify(this.transactions) + this.nonce).digest('hex');
+  }
+
+
+
+  //              END         HASH FUNCTIONS!!!!
+
+
+  /**
+   * Starts the mining process on the block. It changes the 'nonce' until the hash
+   * of the block starts with enough zeros (= difficulty)
+   *
+   * @param {number} difficulty
+   */
+  mineBlock(difficulty) {
+    while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')) {
+      this.nonce++;
+      this.hash = this.calculateHashSha2();
+    }
+
+    debug(`Block mined: ${this.hash}`);
+  }
+
+  /**
+   * Validates all the transactions inside this block (signature + hash) and
+   * returns true if everything checks out. False if the block is invalid.
+   *
+   * @returns {boolean}
+   */
+  hasValidTransactions() {
+    for (const tx of this.transactions) {
+      if (!tx.isValid()) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+}
+
 class Blockchain {
   constructor() {
     this.chain = [this.createGenesisBlock()];
@@ -283,4 +462,5 @@ class Blockchain {
 
 module.exports.Blockchain = Blockchain;
 module.exports.Block = Block;
+module.exports.HashBlock = HashBlock;
 module.exports.Transaction = Transaction;
