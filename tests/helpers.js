@@ -32,7 +32,41 @@ function createBlockchainWithTx() {
   return blockchain;
 }
 
+function standartDeviation(values) {
+  var avg = averageOfList(values);
+
+  var squareDiffs = values.map(function(value) {
+    var diff = value - avg;
+    var sqrDiff = diff * diff;
+    return sqrDiff;
+  });
+
+  var avgSquareDiff = averageOfSquare(squareDiffs);
+
+  return Math.sqrt(avgSquareDiff);
+}
+
+function averageOfSquare(data) {
+  var sum = data.reduce(function(sum, value) {
+    return sum + value;
+  }, 0);
+
+  var avg = sum / (data.length - 1);
+  return avg;
+}
+
+function averageOfList(data) {
+  var sum = data.reduce(function(sum, value) {
+    return sum + value;
+  }, 0);
+
+  var avg = sum / data.length;
+  return avg;
+}
+
 module.exports.signingKey = signingKey;
 module.exports.createSignedTx = createSignedTx;
 module.exports.createBlockchainWithTx = createBlockchainWithTx;
 module.exports.createBCWithMined = createBCWithMined;
+module.exports.standartDeviation = standartDeviation;
+module.exports.averageOfList = averageOfList;

@@ -1,6 +1,4 @@
 
-# Forked from original and modified.
-
 *⚠️ For education purposes only. This is by no means a complete implementation and it is by no means secure!*
 
 ## Features
@@ -13,14 +11,12 @@
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
 ### Install library
+```bash
+npm install
 ```
-npm install 
-```
-
-### Test The code with Mocha
-
-```
-npm test 
+### Start test
+```bash
+npm test
 ```
 
 ### Generate a keypair

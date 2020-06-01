@@ -1,5 +1,5 @@
 const { HashBlock } = require('../src/blockchain');
-const { createSignedTx } = require('./helpers');
+const { createSignedTx, averageOfList, standartDeviation } = require('./helpers');
 
 /**
  THESE PERFORMANCE METRICS ARE USED IN THIS TEST:
@@ -12,8 +12,7 @@ const { createSignedTx } = require('./helpers');
 
 let blockObj = null;
 let blockTime = [];
-let avgBlockTime = 0;
-const numberOfTests = 1000;
+const numberOfTests = 10;
 
 describe('BlockHash class', function() {
   this.timeout(10000); // this test can take up to 5 seconds
@@ -28,16 +27,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('MD5-RSA:');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
       
-      avgBlockTime = 0;
       blockTime = [];
     });
 
@@ -50,16 +45,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('SHA1-RSA:');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average sha2 time->', function() {
@@ -71,16 +62,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('SHA2:');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average sha3 time->', function() {
@@ -92,16 +79,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('SHA384');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average sha512 time->', function() {
@@ -113,16 +96,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('SHA512');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average blake2b512 time->', function() {
@@ -134,16 +113,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('Blake2b512');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average ripemd160-rsa time', function() {
@@ -155,16 +130,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('Ripemd160-RSA');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average mdc2-rsa time->', function() {
@@ -176,16 +147,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('MDC2-RSA');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average ssl3-sha1 time->', function() {
@@ -197,16 +164,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('SSL3-SHA1');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
     it('should give average whirlpool time->', function() {
@@ -218,16 +181,12 @@ describe('BlockHash class', function() {
         blockTime.push(time);
       }
 
-      blockTime.forEach(element => {
-        avgBlockTime += element;
-      });
-
       console.log('Whirpool');
       console.log('key->', blockObj.hash);
       console.log('length->', blockObj.hash.length);
-      console.log('Average Block Hash Time->', avgBlockTime / numberOfTests, ' ms');
+      console.log('Average Block Hash Time->', averageOfList(blockTime), ' ms');
+      console.log('Standart Devation->', standartDeviation(blockTime));
 
-      avgBlockTime = 0;
       blockTime = [];
     });
   });
